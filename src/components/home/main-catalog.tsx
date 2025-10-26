@@ -37,10 +37,14 @@ export const MainCatalog: React.FC = () => {
     const category = searchParams.get('category');
     const pageParam = searchParams.get('page');
     
-    if (category) {
-      setFilters(prev => ({ ...prev, category }));
+    // Всегда синхронизируем категорию с URL (в том числе пустую)
+    setFilters(prev => ({ ...prev, category: category || '' }));
+    
+    if (pageParam) {
+      setPage(Number(pageParam) || 1);
+    } else {
+      setPage(1); // Сбрасываем страницу если параметра нет
     }
-    if (pageParam) setPage(Number(pageParam) || 1);
   }, [searchParams]);
 
   const handleFilterChange = (newFilters: Partial<typeof filters>) => {

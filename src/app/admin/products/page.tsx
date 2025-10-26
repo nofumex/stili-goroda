@@ -32,6 +32,8 @@ export default function AdminProductsPage() {
   const [wbUrl, setWbUrl] = useState('');
   const [wbCategoryId, setWbCategoryId] = useState('');
   const [wbImporting, setWbImporting] = useState(false);
+  const [removingDuplicates, setRemovingDuplicates] = useState(false);
+  const [clearingAll, setClearingAll] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -152,14 +154,113 @@ export default function AdminProductsPage() {
     }
   };
 
-  const handleWBImport = async () => {
-    if (!wbUrl.trim()) {
-      error('Ошибка', 'Введите ссылку на товар WildBerries');
+  const handleClearAll = async () => {
+    if (clearingAll) {
       return;
     }
 
-    if (!wbCategoryId) {
-      error('Ошибка', 'Выберите категорию товара');
+    if (!confirm('⚠️ ВНИМАНИЕ! Это удалит ВСЕ товары из каталога! После этого нужно будет импортировать их заново. Продолжить?')) {
+      return;
+    }
+
+    if (!confirm('Вы уверены? Это действие НЕОБРАТИМО!')) {
+      return;
+    }
+
+    setClearingAll(true);
+    try {
+      const res = await authorizedFetch('/api/admin/products/clear-all', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      
+      const json = await res.json();
+      
+      if (json.success) {
+        success('Все товары удалены', json.message);
+        
+        // Обновляем список товаров
+        setProducts([]);
+        setTotal(0);
+        setPages(1);
+      } else {
+        error('Ошибка', json.error || 'Не удалось удалить товары');
+      }
+    } catch (err: any) {
+      if (err?.message === 'AUTH_REQUIRED') {
+        error('Доступ запрещён', 'Пожалуйста, войдите заново');
+        window.location.href = '/login';
+      } else {
+        error('Ошибка', 'Не удалось удалить товары');
+      }
+    } finally {
+      setClearingAll(false);
+    }
+  };
+
+  const handleRemoveDuplicates = async () => {
+    if (removingDuplicates) {
+      return;
+    }
+
+    if (!confirm('Удалить все дубликаты товаров из WildBerries? Будут оставлены только самые новые версии.')) {
+      return;
+    }
+
+    setRemovingDuplicates(true);
+    try {
+      const res = await authorizedFetch('/api/admin/products/remove-duplicates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      
+      const json = await res.json();
+      
+      if (json.success) {
+        if (json.deleted > 0) {
+          success('Дубликаты удалены', json.message);
+          
+          // Обновляем список товаров
+          const queryString = new URLSearchParams({
+            page: String(page),
+            limit: '20',
+            sortBy,
+            sortOrder,
+            ...(searchQuery && { search: searchQuery }),
+            ...(categoryFilter && { category: categoryFilter }),
+            ...(statusFilter && { status: statusFilter }),
+          }).toString();
+          
+          const reloadRes = await authorizedFetch(`/api/admin/products?${queryString}`);
+          if (reloadRes.ok) {
+            const reloadJson = await reloadRes.json();
+            if (reloadJson.success) {
+              setProducts(reloadJson.data);
+              setPages(reloadJson.pages || 1);
+              setTotal(reloadJson.total || 0);
+            }
+          }
+        } else {
+          success('Дубликаты не найдены', json.message);
+        }
+      } else {
+        error('Ошибка', json.error || 'Не удалось удалить дубликаты');
+      }
+    } catch (err: any) {
+      if (err?.message === 'AUTH_REQUIRED') {
+        error('Доступ запрещён', 'Пожалуйста, войдите заново');
+        window.location.href = '/login';
+      } else {
+        error('Ошибка', 'Не удалось удалить дубликаты');
+      }
+    } finally {
+      setRemovingDuplicates(false);
+    }
+  };
+
+  const handleWBImport = async () => {
+    if (!wbUrl.trim()) {
+      error('Ошибка', 'Введите ссылку на товар или магазин WildBerries');
       return;
     }
 
@@ -179,10 +280,30 @@ export default function AdminProductsPage() {
       const json = await res.json();
       
       if (json.success) {
-        success('Товар импортирован', json.message || 'Товар успешно импортирован из WildBerries');
+        // Проверяем, это массовый импорт или одиночный
+        if (json.data && typeof json.data.imported === 'number') {
+          // Массовый импорт
+          const { imported, total, errors } = json.data;
+          if (errors > 0) {
+            success(
+              'Импорт завершен с ошибками', 
+              `Импортировано: ${imported} из ${total}. Ошибок: ${errors}`
+            );
+          } else {
+            success(
+              'Товары импортированы', 
+              `Успешно импортировано ${imported} товаров из ${total}`
+            );
+          }
+        } else {
+          // Одиночный импорт
+          success('Товар импортирован', json.message || 'Товар успешно импортирован из WildBerries');
+        }
+        
         setWbImportModalOpen(false);
         setWbUrl('');
         setWbCategoryId('');
+        
         // Обновляем список товаров
         const reloadRes = await authorizedFetch(`/api/admin/products?${queryString}`);
         if (reloadRes.ok) {
@@ -250,12 +371,86 @@ export default function AdminProductsPage() {
           }
           break;
         case 'activate':
-          // API call to bulk activate
-          success('Товары активированы', `Активировано ${selectedProducts.length} товаров`);
+          try {
+            let activated = 0;
+            for (const productId of selectedProducts) {
+              const product = products.find(p => p.id === productId);
+              if (!product) continue;
+              
+              const res = await authorizedFetch(`/api/products/${product.slug}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  visibility: 'VISIBLE',
+                  isActive: true,
+                }),
+              });
+              
+              if (res.ok) {
+                activated++;
+              }
+            }
+            
+            if (activated > 0) {
+              success('Товары опубликованы', `Опубликовано ${activated} из ${selectedProducts.length} товаров`);
+              // Обновляем локальное состояние
+              setProducts(prev => prev.map(p => 
+                selectedProducts.includes(p.id) 
+                  ? { ...p, visibility: 'VISIBLE', isActive: true }
+                  : p
+              ));
+            } else {
+              error('Ошибка', 'Не удалось опубликовать товары');
+            }
+          } catch (e: any) {
+            if (e?.message === 'AUTH_REQUIRED') {
+              error('Доступ запрещён', 'Пожалуйста, войдите заново');
+              window.location.href = '/login';
+            } else {
+              error('Ошибка', 'Не удалось опубликовать товары');
+            }
+          }
           break;
         case 'deactivate':
-          // API call to bulk deactivate
-          success('Товары деактивированы', `Деактивировано ${selectedProducts.length} товаров`);
+          try {
+            let deactivated = 0;
+            for (const productId of selectedProducts) {
+              const product = products.find(p => p.id === productId);
+              if (!product) continue;
+              
+              const res = await authorizedFetch(`/api/products/${product.slug}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  visibility: 'HIDDEN',
+                  isActive: false,
+                }),
+              });
+              
+              if (res.ok) {
+                deactivated++;
+              }
+            }
+            
+            if (deactivated > 0) {
+              success('Товары скрыты', `Скрыто ${deactivated} из ${selectedProducts.length} товаров`);
+              // Обновляем локальное состояние
+              setProducts(prev => prev.map(p => 
+                selectedProducts.includes(p.id) 
+                  ? { ...p, visibility: 'HIDDEN', isActive: false }
+                  : p
+              ));
+            } else {
+              error('Ошибка', 'Не удалось скрыть товары');
+            }
+          } catch (e: any) {
+            if (e?.message === 'AUTH_REQUIRED') {
+              error('Доступ запрещён', 'Пожалуйста, войдите заново');
+              window.location.href = '/login';
+            } else {
+              error('Ошибка', 'Не удалось скрыть товары');
+            }
+          }
           break;
         case 'export': {
           try {
@@ -330,6 +525,24 @@ export default function AdminProductsPage() {
           >
             <Download className="h-4 w-4 mr-2" />
             Импорт из WB
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={handleRemoveDuplicates}
+            disabled={removingDuplicates}
+            className="hidden"
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            {removingDuplicates ? 'Удаление...' : 'Удалить дубликаты'}
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={handleClearAll}
+            disabled={clearingAll}
+            className="bg-red-50 hover:bg-red-100 text-red-700 border-red-300"
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            {clearingAll ? 'Удаление...' : 'Удалить ВСЕ товары'}
           </Button>
           <Button variant="outline" asChild>
             <Link href="/admin/import-export">
@@ -681,30 +894,52 @@ export default function AdminProductsPage() {
             setWbCategoryId('');
           }
         }}
-        title="Импорт товара из WildBerries"
+        title="Импорт товаров из WildBerries"
         size="md"
       >
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Ссылка на товар WildBerries
+              Ссылки на товары WildBerries
             </label>
-            <Input
-              type="text"
-              placeholder="https://www.wildberries.ru/catalog/407325131"
+            <textarea
+              placeholder="Вставьте ссылки на товары (по одной на строку):&#10;https://www.wildberries.ru/catalog/407325131/detail.aspx&#10;https://www.wildberries.ru/catalog/406112046/detail.aspx&#10;..."
               value={wbUrl}
               onChange={(e) => setWbUrl(e.target.value)}
               disabled={wbImporting}
-              className="w-full"
+              rows={6}
+              className="w-full rounded-md border-gray-300 text-sm focus:border-primary-500 focus:ring-primary-500"
             />
-            <p className="mt-1 text-xs text-gray-500">
-              Вставьте полную ссылку на товар с сайта WildBerries
-            </p>
+            <div className="mt-2 space-y-2">
+              <p className="text-xs font-semibold text-gray-700">
+                Примеры:
+              </p>
+              
+              <div className="ml-4 space-y-1">
+                <p className="text-xs text-gray-600">
+                  📦 Один товар:
+                </p>
+                <p className="text-xs text-gray-500 ml-2">
+                  https://www.wildberries.ru/catalog/407325131/detail.aspx
+                </p>
+              </div>
+              
+              <div className="ml-4 space-y-1">
+                <p className="text-xs text-gray-600">
+                  📋 Несколько товаров (по одной строке):
+                </p>
+                <p className="text-xs text-gray-500 ml-2">
+                  https://www.wildberries.ru/catalog/407325131/detail.aspx<br/>
+                  https://www.wildberries.ru/catalog/406112046/detail.aspx<br/>
+                  https://www.wildberries.ru/catalog/123456789/detail.aspx
+                </p>
+              </div>
+            </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Категория товара
+              Категория товара <span className="text-gray-400 font-normal">(опционально)</span>
             </label>
             <select
               className="w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500"
@@ -712,27 +947,20 @@ export default function AdminProductsPage() {
               onChange={(e) => setWbCategoryId(e.target.value)}
               disabled={wbImporting}
             >
-              <option value="">Выберите категорию</option>
+              <option value="">Определить автоматически из данных WB</option>
               {Array.isArray(categories) && categories.map((cat: any) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
             <p className="mt-1 text-xs text-gray-500">
-              Выберите категорию, в которую будет добавлен товар
-            </p>
-          </div>
-
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm text-blue-800">
-              <strong>Обратите внимание:</strong> Товар будет создан в статусе "Черновик". 
-              После импорта проверьте данные и опубликуйте товар вручную.
+              Если не выбрать, категория будет автоматически создана на основе данных товара с WildBerries
             </p>
           </div>
 
           <div className="flex space-x-4">
             <Button
               onClick={handleWBImport}
-              disabled={wbImporting || !wbUrl.trim() || !wbCategoryId}
+              disabled={wbImporting || !wbUrl.trim()}
               className="flex-1"
             >
               {wbImporting ? 'Импортируем...' : 'Импортировать'}

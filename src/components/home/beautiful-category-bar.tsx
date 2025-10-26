@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Sparkles } from 'lucide-react';
 
 interface Category {
@@ -20,16 +20,36 @@ interface BeautifulCategoryBarProps {
 }
 
 export const BeautifulCategoryBar: React.FC<BeautifulCategoryBarProps> = ({ categories }) => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get('category') || '';
+  const [showAll, setShowAll] = React.useState(false);
+
+  // Фильтруем и сортируем категории: убираем пустые, "Без категории" в конец
+  const sortedCategories = React.useMemo(() => {
+    return [...categories]
+      .filter(cat => (cat._count?.products || 0) > 0) // Убираем пустые категории
+      .sort((a, b) => {
+        // "Без категории" всегда в конец
+        if (a.slug === 'bez-kategorii') return 1;
+        if (b.slug === 'bez-kategorii') return -1;
+        // Остальные по количеству товаров (от большего к меньшему)
+        const aCount = a._count?.products || 0;
+        const bCount = b._count?.products || 0;
+        return bCount - aCount;
+      });
+  }, [categories]);
+
+  // Отображаемые категории
+  const displayCategories = showAll ? sortedCategories : sortedCategories.slice(0, 8);
 
   return (
     <div className="bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 border-b border-primary-900 shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex items-center gap-3 py-4 overflow-x-auto scrollbar-hide">
           {/* Все товары */}
-          <Link
-            href="/"
+          <button
+            onClick={() => router.push('/')}
             className={`group px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap ${
               !activeCategory
                 ? 'bg-white text-primary-700 shadow-xl'
@@ -40,10 +60,10 @@ export const BeautifulCategoryBar: React.FC<BeautifulCategoryBarProps> = ({ cate
               <Sparkles className="h-4 w-4" />
               <span>Все товары</span>
             </div>
-          </Link>
+          </button>
           
           {/* Категории */}
-          {categories.slice(0, 8).map((category) => {
+          {displayCategories.map((category) => {
             const isActive = activeCategory === category.slug;
             
             return (
@@ -73,13 +93,23 @@ export const BeautifulCategoryBar: React.FC<BeautifulCategoryBarProps> = ({ cate
           })}
 
           {/* Ещё категории */}
-          {categories.length > 8 && (
-            <Link
-              href="/"
+          {sortedCategories.length > 8 && !showAll && (
+            <button
+              onClick={() => setShowAll(true)}
               className="px-6 py-3 rounded-xl text-sm font-semibold bg-white/10 text-white hover:bg-white/20 transition-all duration-300 whitespace-nowrap"
             >
-              Ещё +{categories.length - 8}
-            </Link>
+              Ещё +{sortedCategories.length - 8}
+            </button>
+          )}
+          
+          {/* Скрыть категории */}
+          {showAll && sortedCategories.length > 8 && (
+            <button
+              onClick={() => setShowAll(false)}
+              className="px-6 py-3 rounded-xl text-sm font-semibold bg-white/10 text-white hover:bg-white/20 transition-all duration-300 whitespace-nowrap"
+            >
+              Скрыть
+            </button>
           )}
         </div>
       </div>

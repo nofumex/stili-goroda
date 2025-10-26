@@ -195,13 +195,6 @@ export default function CreateProductPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Проверяем, что выбрана категория
-    if (!formData.categoryId) {
-      error('Ошибка', 'Необходимо выбрать категорию');
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
       // Authorized fetch with refresh on 401
       const refreshAuth = async (): Promise<boolean> => {
@@ -315,37 +308,34 @@ export default function CreateProductPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
-                Название товара *
+                Название товара
               </label>
               <Input
                 value={formData.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
                 placeholder="Введите название товара"
-                required
               />
             </div>
             
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
-                SKU *
+                SKU
               </label>
               <Input
                 value={formData.sku}
                 onChange={(e) => handleInputChange('sku', e.target.value)}
                 placeholder="Введите SKU товара"
-                required
               />
             </div>
             
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
-                Категория товара *
+                Категория товара
               </label>
               <select
                 value={formData.category}
                 onChange={(e) => handleInputChange('category', e.target.value)}
                 className="w-full rounded-md border-gray-300 text-sm focus:border-primary-500 focus:ring-primary-500"
-                required
               >
                 <option value="ECONOMY">Эконом</option>
                 <option value="MIDDLE">Средний</option>
@@ -385,13 +375,12 @@ export default function CreateProductPage() {
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
-                Категория *
+                Категория
               </label>
               <select
                 value={formData.categoryId}
                 onChange={(e) => handleInputChange('categoryId', e.target.value)}
                 className="w-full rounded-md border-gray-300 text-sm focus:border-primary-500 focus:ring-primary-500"
-                required
                 disabled={loadingCategories}
               >
                 <option value="">
@@ -456,7 +445,7 @@ export default function CreateProductPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
-                Цена *
+                Цена
               </label>
               <Input
                 type="number"
@@ -465,7 +454,6 @@ export default function CreateProductPage() {
                 placeholder="0"
                 min="0"
                 step="0.01"
-                required
               />
             </div>
             
@@ -485,7 +473,7 @@ export default function CreateProductPage() {
             
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
-                Количество на складе *
+                Количество на складе
               </label>
               <Input
                 type="number"
@@ -493,13 +481,12 @@ export default function CreateProductPage() {
                 onChange={(e) => handleInputChange('stock', e.target.value)}
                 placeholder="0"
                 min="0"
-                required
               />
             </div>
             
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
-                Минимальный заказ *
+                Минимальный заказ
               </label>
               <Input
                 type="number"
@@ -507,7 +494,6 @@ export default function CreateProductPage() {
                 onChange={(e) => handleInputChange('minOrder', e.target.value)}
                 placeholder="1"
                 min="1"
-                required
               />
             </div>
           </div>
