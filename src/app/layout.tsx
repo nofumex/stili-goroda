@@ -8,6 +8,7 @@ import { ToastProvider } from '@/components/ui/toast';
 import { BackToTop } from '@/components/ui/back-to-top';
 import { SitePopup } from '@/components/ui/site-popup';
 import { FaviconManager } from '@/components/seo/favicon-manager';
+import { CookieBanner } from '@/components/ui/cookie-banner';
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'] });
 
@@ -65,6 +66,7 @@ export default function RootLayout({
         <ToastProvider>
           <Header />
           <SitePopup />
+          <CookieBanner />
           {children}
           <Footer />
           <CartDrawer />

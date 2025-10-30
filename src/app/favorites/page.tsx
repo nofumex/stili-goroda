@@ -23,7 +23,7 @@ export default function FavoritesPage() {
               Избранное
             </h1>
             <p className="text-gray-600 text-lg font-medium">
-              {uniqueIds.length > 0 ? `Товаров в избранном: ${uniqueIds.length}` : 'Здесь появятся товары, которые вам понравились'}
+              {uniqueIds.length > 0 ? 'Здесь собраны товары, которые вам понравились' : 'Здесь появятся товары, которые вам понравились'}
             </p>
           </div>
         </div>
@@ -109,6 +109,11 @@ function FavoritesList({ ids }: { ids: string[] }) {
 
   return (
     <div className="animate-fade-in">
+      <div className="mb-6">
+        <p className="text-gray-700 text-base">
+          {`Товаров в избранном: ${products.length}`}
+        </p>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.map((p: any) => (
           <ProductCard key={p.id} product={p} />

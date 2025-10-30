@@ -32,7 +32,7 @@ export const CartDrawer: React.FC = () => {
           <div className="p-6 text-center">
             <p className="text-gray-600 mb-4">Ваша корзина пуста. Перейдите в каталог, чтобы выбрать товары!</p>
             <Link href="/catalog" onClick={closeCart}>
-              <Button className="bg-blue-100 text-blue-800 hover:bg-blue-200">В каталог</Button>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700">В каталог</Button>
             </Link>
           </div>
         ) : (
@@ -84,7 +84,7 @@ export const CartDrawer: React.FC = () => {
                 <span className="font-bold">{currency(getTotalPrice())}</span>
               </div>
               <Link href="/checkout" onClick={closeCart}>
-                <Button className="w-full bg-blue-100 text-blue-900 hover:bg-blue-200">Оформить заказ</Button>
+                <Button className="w-full bg-blue-600 text-white hover:bg-blue-700">Оформить заказ</Button>
               </Link>
               <Link href="/catalog" onClick={closeCart}>
                 <Button variant="outline" className="w-full">Продолжить покупки</Button>

@@ -15,6 +15,7 @@ export const ContactSection: React.FC = () => {
     company: '',
     message: '',
   });
+  const [consent, setConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: publicSettings } = usePublicSettings();
   const { success, error } = useToast();
@@ -26,6 +27,7 @@ export const ContactSection: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!consent) return;
     setIsSubmitting(true);
 
     try {
@@ -40,6 +42,7 @@ export const ContactSection: React.FC = () => {
         company: '',
         message: '',
       });
+      setConsent(false);
     } catch (err) {
       error('Ошибка отправки', 'Попробуйте еще раз или свяжитесь с нами по телефону');
     } finally {
@@ -191,6 +194,21 @@ export const ContactSection: React.FC = () => {
                 />
               </div>
 
+              <div className="flex items-start">
+                <input
+                  type="checkbox"
+                  className="mt-1 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  required
+                  aria-required="true"
+                />
+                <label className="ml-2 text-sm text-gray-600">
+                  Я даю согласие на обработку персональных данных и принимаю{' '}
+                  <a href="/privacy" className="text-primary-600 hover:text-primary-500 underline">Политику конфиденциальности</a>.
+                </label>
+              </div>
+
               <Button
                 type="submit"
                 size="lg"
@@ -202,9 +220,6 @@ export const ContactSection: React.FC = () => {
               </Button>
             </form>
 
-            <p className="text-sm text-gray-500 mt-4">
-              Отправляя форму, вы соглашаетесь на обработку персональных данных.
-            </p>
           </div>
         </div>
 

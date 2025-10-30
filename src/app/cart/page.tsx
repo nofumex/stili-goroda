@@ -17,7 +17,7 @@ export default function CartPage() {
         <div className="bg-white border rounded-lg p-8 text-center max-w-xl mx-auto">
           <p className="text-gray-600 mb-6">Ваша корзина пуста. Перейдите в каталог, чтобы выбрать товары!</p>
           <Link href="/catalog">
-            <Button className="bg-blue-100 text-blue-800 hover:bg-blue-200">В каталог</Button>
+            <Button className="bg-blue-600 text-white hover:bg-blue-700">В каталог</Button>
           </Link>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function CartPage() {
             </div>
             <div className="mt-6 flex flex-col gap-3">
               <Link href="/checkout">
-                <Button className="w-full bg-blue-100 text-blue-900 hover:bg-blue-200">Оформить заказ</Button>
+                <Button className="w-full bg-blue-600 text-white hover:bg-blue-700">Оформить заказ</Button>
               </Link>
               <Link href="/catalog">
                 <Button variant="outline" className="w-full">Продолжить покупки</Button>

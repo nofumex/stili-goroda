@@ -43,35 +43,36 @@ export const Header: React.FC = () => {
       {/* Top bar */}
       <div className="bg-gradient-to-r from-primary-600 via-primary-700 to-accent py-2.5 animate-gradient">
         <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center text-sm text-white">
+          <div className="flex justify-between items-center text-sm text-white">
+            {/* Левые контакты */}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
               <div className="flex items-center space-x-1 hover:text-accent-100 transition-colors">
                 <MapPin className="h-4 w-4" />
-                  <span>{publicSettings?.address || ''}</span>
+                <span>{publicSettings?.address || ''}</span>
               </div>
               <div className="flex items-center space-x-1 hover:text-accent-100 transition-colors">
                 <Phone className="h-4 w-4" />
-                  <span>{publicSettings?.contactPhone || ''}</span>
+                <span>{publicSettings?.contactPhone || ''}</span>
               </div>
               <div className="flex items-center space-x-1 hover:text-accent-100 transition-colors">
                 <Mail className="h-4 w-4" />
-                  <span>{publicSettings?.contactEmail || ''}</span>
+                <span>{publicSettings?.contactEmail || ''}</span>
               </div>
             </div>
-            <div className="hidden md:flex items-center space-x-4">
-              {isAuthenticated ? (
-                null
-              ) : (
-                <>
-                  <Link href="/login" className="hover:text-accent-100 transition-colors font-medium">
-                    Вход
-                  </Link>
-                  <Link href="/register" className="hover:text-accent-100 transition-colors font-medium">
-                    Регистрация
-                  </Link>
-                </>
-              )}
-            </div>
+            {/* Правая кнопка Wildberries */}
+            <a
+              href="https://www.wildberries.ru/seller/4473987"
+              className="wildberries-btn hidden md:inline-flex items-center px-4 py-1.5 ml-2 rounded-full font-semibold transition-all duration-200 shadow-xl gradient-primary hover:scale-105 hover:shadow-2xl animate-fade-in"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Покупайте на WildBerries — наш официальный магазин"
+            >
+              <svg width="28" height="18" viewBox="0 0 28 18" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
+                <circle cx="14" cy="9" r="9" fill="#B937C6" />
+                <text x="50%" y="54%" textAnchor="middle" fill="white" font-size="9" dy=".3em" font-weight="bold" font-family="Arial,sans-serif">WB</text>
+              </svg>
+              <span>Мы на WildBerries</span>
+            </a>
           </div>
         </div>
       </div>

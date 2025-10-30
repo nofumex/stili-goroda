@@ -16,6 +16,7 @@ interface LeadModalProps {
 export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, defaultSource = 'website', defaultMessage }) => {
   const [form, setForm] = useState({ name: '', phone: '', email: '', company: '', message: defaultMessage || '' });
   const [loading, setLoading] = useState(false);
+  const [consent, setConsent] = useState(false);
   const { success, error } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -25,6 +26,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, defaultSo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!consent) return;
     setLoading(true);
     try {
       const res = await fetch('/api/leads', {
@@ -36,6 +38,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, defaultSo
       if (json.success) {
         success('Заявка отправлена', 'Мы свяжемся с вами в ближайшее время');
         setForm({ name: '', phone: '', email: '', company: '', message: '' });
+        setConsent(false);
         onClose();
       } else {
         error('Ошибка', json.error || 'Не удалось отправить заявку');
@@ -64,6 +67,20 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, defaultSo
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
             placeholder="Опишите запрос"
           />
+        </div>
+        <div className="flex items-start">
+          <input
+            type="checkbox"
+            className="mt-1 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            required
+            aria-required="true"
+          />
+          <label className="ml-2 text-sm text-gray-600">
+            Я даю согласие на обработку персональных данных и принимаю{' '}
+            <a href="/privacy" className="text-primary-600 hover:text-primary-500 underline">Политику конфиденциальности</a>.
+          </label>
         </div>
         <Button type="submit" loading={loading} className="w-full">Отправить</Button>
       </form>

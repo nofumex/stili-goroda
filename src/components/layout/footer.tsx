@@ -193,6 +193,15 @@ export const Footer: React.FC = () => {
               © {currentYear} «Стили Города». Все права защищены.
             </div>
             <div className="flex items-center">
+            <div className="flex items-center gap-4 mr-4 text-sm">
+              <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
+                Политика конфиденциальности
+              </Link>
+              <span className="text-gray-700">|</span>
+              <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
+                Пользовательское соглашение
+              </Link>
+            </div>
               <a
                 href="https://casadigital.ru/"
                 target="_blank"
