@@ -12,7 +12,6 @@ import { useToast } from '@/components/ui/toast';
 import { useLogin } from '@/hooks/useApi';
 import { useAuthStore } from '@/store/auth';
 import { loginSchema, LoginInput } from '@/lib/validations';
-import { Header } from '@/components/layout/header';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);

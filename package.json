@@ -1,7 +1,7 @@
 {
   "name": "stili-goroda",
   "version": "1.0.0",
-  "description": "Интернет-магазин Стили Города — городские стили и аксессуары",
+  "description": "Интернет-магазин Стиль Города —  Городские стили и аксессуары",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -54,7 +54,7 @@ export const AdminDashboard: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-accent bg-clip-text text-transparent">Панель управления</h1>
           <p className="text-gray-600">
-            Добро пожаловать в админ-панель Стили Города
+            Добро пожаловать в админ-панель Стиль Города
           </p>
         </div>
         <div className="flex items-center space-x-3">

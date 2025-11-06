@@ -6,8 +6,6 @@ import { useAuthStore } from '@/store/auth';
 import { useLogout } from '@/hooks/useApi';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
 import { ProfileInfo } from '@/components/profile/profile-info';
 import { OrderHistory } from '@/components/profile/order-history';
 import { AddressBook } from '@/components/profile/address-book';
@@ -33,7 +31,6 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
@@ -47,7 +44,6 @@ export default function ProfilePage() {
             </Button>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }

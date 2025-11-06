@@ -25,13 +25,13 @@ export const Footer: React.FC = () => {
                 <span className="text-white font-bold text-xl">СГ</span>
               </div>
               <div>
-                <h3 className="text-xl font-extrabold text-shine">Стили Города</h3>
-                <p className="text-sm text-gray-400 font-medium">Городские стили и аксессуары</p>
+                <h3 className="text-xl font-extrabold text-shine">Стиль Города</h3>
+                <p className="text-sm text-gray-400 font-medium"> Городские стили и аксессуары</p>
               </div>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              «Стили Города» — интернет-магазин городской одежды и аксессуаров. 
-              Широкий выбор стильных товаров, быстрая доставка, индивидуальный подход к каждому клиенту.
+              «Стиль Города» — интернет-магазин городской одежды и аксессуаров. 
+              Широкий выбор Стильных товаров, быстрая доставка, индивидуальный подход к каждому клиенту.
             </p>
           </div>
 
@@ -190,7 +190,7 @@ export const Footer: React.FC = () => {
         <div className="mt-16 pt-8 border-t border-gray-700/50">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-400 text-sm font-medium">
-              © {currentYear} «Стили Города». Все права защищены.
+              © {currentYear} «Стиль Города». Все права защищены.
             </div>
             <div className="flex items-center">
             <div className="flex items-center gap-4 mr-4 text-sm">

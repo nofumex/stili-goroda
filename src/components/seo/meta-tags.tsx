@@ -19,7 +19,7 @@ export function generateMetadata({
   noindex = false,
   type = 'website',
 }: GenerateMetadataProps): Metadata {
-  const siteName = 'Стили Города';
+  const siteName = 'Стиль Города';
   const siteUrl = process.env.SITE_URL || 'https://stili-goroda.ru';
   
   const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
@@ -66,42 +66,42 @@ export function generateMetadata({
 // Predefined metadata for common pages
 export const metadataTemplates = {
   home: {
-    title: 'Стили Города — интернет-магазин городских стилей',
-    description: 'Стили Города — интернет-магазин одежды и аксессуаров в городском стиле. Широкий каталог, быстрая доставка, оптовые цены. Откройте свой стиль города!',
-    keywords: 'городская одежда, стильная одежда, аксессуары, интернет-магазин, доставка, оптом',
+    title: 'Стиль Города — интернет-магазин городских стилей',
+    description: 'Стиль Города — интернет-магазин одежды и аксессуаров в городском стиле. Широкий каталог, быстрая доставка, оптовые цены. Откройте свой Стиль города!',
+    keywords: 'городская одежда, Стильная одежда, аксессуары, интернет-магазин, доставка, оптом',
   },
   catalog: {
     title: 'Каталог городских стилей',
     description: 'Широкий выбор одежды и аксессуаров в городском стиле. Качественные материалы, современные тренды, доступные цены, быстрая доставка.',
-    keywords: 'каталог, одежда, аксессуары, городской стиль, тренды, мода',
+    keywords: 'каталог, одежда, аксессуары, городской Стиль, тренды, мода',
   },
   about: {
-    title: 'О компании Стили Города',
-    description: '«Стили Города» — интернет-магазин городской одежды и аксессуаров. Мы предлагаем стильные решения для современных людей. Качество и индивидуальный подход.',
-    keywords: 'о компании, стили города, городская мода, качество, стиль',
+    title: 'О компании Стиль Города',
+    description: '«Стиль Города» — интернет-магазин городской одежды и аксессуаров. Мы предлагаем Стильные решения для современных людей. Качество и индивидуальный подход.',
+    keywords: 'о компании, Стиль города, городская мода, качество, Стиль',
   },
   contacts: {
-    title: 'Контакты — Стили Города',
+    title: 'Контакты — Стиль Города',
     description: 'Свяжитесь с нами. Мы всегда на связи и готовы помочь с выбором. Звоните, пишите, приезжайте!',
     keywords: 'контакты, телефон, адрес, режим работы, связь',
   },
   delivery: {
-    title: 'Доставка и оплата — Стили Города',
+    title: 'Доставка и оплата — Стиль Города',
     description: 'Доставка одежды и аксессуаров по всей России. Различные способы оплаты. Быстрая отгрузка заказов.',
     keywords: 'доставка, оплата, быстрая доставка, способы оплаты',
   },
   return: {
-    title: 'Возврат и обмен товаров — Стили Города',
+    title: 'Возврат и обмен товаров — Стиль Города',
     description: 'Условия возврата и обмена товаров. Гарантия качества. Защита прав потребителей.',
     keywords: 'возврат, обмен, гарантия, права потребителей, качество',
   },
   privacy: {
-    title: 'Политика конфиденциальности — Стили Города',
+    title: 'Политика конфиденциальности — Стиль Города',
     description: 'Политика обработки персональных данных. Защита конфиденциальности клиентов. Соответствие требованиям законодательства.',
     keywords: 'политика конфиденциальности, персональные данные, защита данных',
   },
   terms: {
-    title: 'Условия использования — Стили Города',
+    title: 'Условия использования — Стиль Города',
     description: 'Пользовательское соглашение и условия использования интернет-магазина городских стилей.',
     keywords: 'условия использования, пользовательское соглашение, правила',
   },
@@ -110,9 +110,9 @@ export const metadataTemplates = {
 // Generate category metadata
 export function generateCategoryMetadata(categoryName: string, categorySlug: string) {
   return {
-    title: `${categoryName} — купить онлайн | Стили Города`,
-    description: `Широкий выбор ${categoryName.toLowerCase()} высокого качества. Быстрая доставка по всей России. Стильные решения от Стили Города.`,
-    keywords: `${categoryName.toLowerCase()}, купить ${categoryName.toLowerCase()}, городской стиль, модная одежда`,
+    title: `${categoryName} — купить онлайн | Стиль Города`,
+    description: `Широкий выбор ${categoryName.toLowerCase()} высокого качества. Быстрая доставка по всей России. Стильные решения от Стиль Города.`,
+    keywords: `${categoryName.toLowerCase()}, купить ${categoryName.toLowerCase()}, городской Стиль, модная одежда`,
     canonical: `/catalog/${categorySlug}`,
   };
 }
@@ -133,7 +133,7 @@ export function generateProductMetadata(product: {
   }).format(product.price);
 
   return {
-    title: `${product.title} — купить за ${priceText} | Стили Города`,
+    title: `${product.title} — купить за ${priceText} | Стиль Города`,
     description: product.description || `${product.title} из качественных материалов. ${product.material ? `Материал: ${product.material}.` : ''} Цена: ${priceText}. Быстрая доставка.`,
     keywords: `${product.title.toLowerCase()}, ${product.category.toLowerCase()}, ${product.material?.toLowerCase() || ''}, купить, цена`,
     canonical: `/products/${product.slug}`,
@@ -150,7 +150,7 @@ export function generateArticleMetadata(article: {
   author?: string;
 }) {
   return {
-    title: `${article.title} | Блог Стили Города`,
+    title: `${article.title} | Блог Стиль Города`,
     description: article.description,
     canonical: `/blog/${article.slug}`,
     type: 'article' as const,

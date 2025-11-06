@@ -2,8 +2,6 @@
 import React from 'react';
 import { Clock, Calendar, MapPin, Phone, Mail } from 'lucide-react';
 import { usePublicSettings } from '@/hooks/useApi';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
 
 export default function ContactsPage() {
   const { data: publicSettings } = usePublicSettings();

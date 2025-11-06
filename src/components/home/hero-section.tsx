@@ -172,8 +172,8 @@ export const HeroSection: React.FC = () => {
           <div className="space-y-8 lg:order-1">
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                <span className="bg-gradient-to-r from-primary-600 to-accent bg-clip-text text-transparent">Стили Города</span> — 
-                откройте свой стиль города
+                <span className="bg-gradient-to-r from-primary-600 to-accent bg-clip-text text-transparent">Стиль Города</span> — 
+                откройте свой Стиль города
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed">
                 Интернет-магазин городской одежды и аксессуаров. Стильные решения для современных людей

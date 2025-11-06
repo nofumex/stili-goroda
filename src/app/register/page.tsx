@@ -12,8 +12,6 @@ import { useToast } from '@/components/ui/toast';
 import { useRegister } from '@/hooks/useApi';
 import { useAuthStore } from '@/store/auth';
 import { registerSchema, RegisterInput } from '@/lib/validations';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +34,7 @@ export default function RegisterPage() {
       
       if (result.user) {
         setUser(result.user);
-        success('Регистрация успешна!', 'Добро пожаловать в Стили Города');
+        success('Регистрация успешна!', 'Добро пожаловать в Стиль Города');
         router.push('/profile');
       }
     } catch (err) {

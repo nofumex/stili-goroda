@@ -133,6 +133,12 @@ export const reviewSchema = z.object({
   content: z.string().min(10, 'Отзыв должен содержать минимум 10 символов'),
 });
 
+// Site review validations (for general site reviews, not product-specific)
+export const siteReviewSchema = z.object({
+  rating: z.number().min(1, 'Минимальная оценка - 1').max(5, 'Максимальная оценка - 5'),
+  content: z.string().min(10, 'Отзыв должен содержать минимум 10 символов'),
+});
+
 // Lead validations
 export const leadSchema = z.object({
   name: z.string().min(2, 'Имя должно содержать минимум 2 символа'),
@@ -299,6 +305,7 @@ export type CategoryInput = z.infer<typeof categorySchema>;
 export type CheckoutInput = z.infer<typeof checkoutSchema>;
 export type UpdateOrderInput = z.infer<typeof updateOrderSchema>;
 export type ReviewInput = z.infer<typeof reviewSchema>;
+export type SiteReviewInput = z.infer<typeof siteReviewSchema>;
 export type LeadInput = z.infer<typeof leadSchema>;
 export type ContactFormInput = z.infer<typeof contactFormSchema>;
 export type PageInput = z.infer<typeof pageSchema>;

@@ -8,7 +8,7 @@ export const OrganizationStructuredData: React.FC<OrganizationStructuredDataProp
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Стили Города',
+    name: 'Стиль Города',
     alternateName: 'Stili Goroda',
     url: 'https://stili-goroda.ru',
     logo: 'https://stili-goroda.ru/logo-stili-goroda.svg',
@@ -85,11 +85,11 @@ export const ProductStructuredData: React.FC<ProductStructuredDataProps> = ({ pr
     image: product.images.length > 0 ? product.images : ['https://stili-goroda.ru/product-placeholder.png'],
     brand: {
       '@type': 'Brand',
-      name: 'Стили Города'
+      name: 'Стиль Города'
     },
     manufacturer: {
       '@type': 'Organization',
-      name: 'Стили Города'
+      name: 'Стиль Города'
     },
     sku: product.sku,
     mpn: product.sku,
@@ -107,7 +107,7 @@ export const ProductStructuredData: React.FC<ProductStructuredDataProps> = ({ pr
       itemCondition: 'https://schema.org/NewCondition',
       seller: {
         '@type': 'Organization',
-        name: 'Стили Города'
+        name: 'Стиль Города'
       }
     },
     aggregateRating: product.averageRating && product._count?.reviews ? {
@@ -179,7 +179,7 @@ export const WebsiteStructuredData: React.FC<WebsiteStructuredDataProps> = () =>
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Стили Города',
+    name: 'Стиль Города',
     alternateName: 'Stili Goroda',
     url: 'https://stili-goroda.ru',
     description: 'Интернет-магазин городской одежды и аксессуаров. Стильные решения для современных людей.',
@@ -193,7 +193,7 @@ export const WebsiteStructuredData: React.FC<WebsiteStructuredDataProps> = () =>
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Стили Города',
+      name: 'Стиль Города',
       logo: {
         '@type': 'ImageObject',
         url: 'https://stili-goroda.ru/logo-stili-goroda.svg'

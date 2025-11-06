@@ -50,7 +50,7 @@ export const ModernHero: React.FC<ModernHeroProps> = ({ categories = [] }) => {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-              Откройте <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">свой стиль</span> города
+              Откройте <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">свой Стиль</span> города
             </h1>
             
             <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">

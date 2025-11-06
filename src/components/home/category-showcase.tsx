@@ -31,7 +31,7 @@ export const CategoryShowcase: React.FC<CategoryShowcaseProps> = ({ categories }
             Категории товаров
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Выберите категорию, которая вам интересна, и откройте для себя мир стильной одежды
+            Выберите категорию, которая вам интересна, и откройте для себя мир Стильной одежды
           </p>
         </div>
 

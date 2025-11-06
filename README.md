@@ -7,7 +7,7 @@
 - **Next.js 14** - React фреймворк
 - **TypeScript** - типизация
 - **Prisma** - ORM для работы с базой данных
-- **Tailwind CSS** - стилизация
+- **Tailwind CSS** - Стильзация
 - **SQLite** - база данных
 
 ## Функционал

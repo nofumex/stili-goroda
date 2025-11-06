@@ -94,8 +94,8 @@ export const Header: React.FC = () => {
               </div>
             )}
             <div>
-              <h1 className="text-2xl font-bold text-shine">Стили Города</h1>
-              <p className="text-sm text-gray-500 font-medium">Городские стили и аксессуары</p>
+              <h1 className="text-2xl font-bold text-shine">Стиль Города</h1>
+              <p className="text-sm text-gray-500 font-medium"> Городские стили и аксессуары</p>
             </div>
           </Link>
 

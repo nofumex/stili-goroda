@@ -13,7 +13,8 @@ import {
   Upload, 
   Download,
   X,
-  LogOut
+  LogOut,
+  MessageSquare
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import { useLogout } from '@/hooks/useApi';
@@ -180,6 +181,12 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       href: '/admin/customers',
       icon: Users,
       current: pathname.startsWith('/admin/customers'),
+    },
+    {
+      name: 'Отзывы',
+      href: '/admin/reviews',
+      icon: MessageSquare,
+      current: pathname.startsWith('/admin/reviews'),
     },
     {
       name: 'Категории',

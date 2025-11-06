@@ -173,7 +173,7 @@ export class ExportService {
       categories: exportCategories,
       mediaIndex,
       settings: {
-        siteName: 'Стили Города',
+        siteName: 'Стиль Города',
         siteDescription: 'Интернет-магазин городской одежды и аксессуаров',
         contactEmail: 'info@stili-goroda.ru',
         contactPhone: '+7 (XXX) XXX-XX-XX',
@@ -260,7 +260,7 @@ export class ExportService {
     }
     
     // Добавляем README файл
-    zip.file('README.md', `# Экспорт данных Стили Города
+    zip.file('README.md', `# Экспорт данных Стиль Города
     
 Дата экспорта: ${data.exportedAt}
 Версия схемы: ${data.schemaVersion}
